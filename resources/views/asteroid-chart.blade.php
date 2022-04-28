@@ -15,33 +15,44 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 <script>
-    var year = <?php echo $year; ?>;
-    var user = <?php echo $user; ?>;
-    var fastAsteroid = {
-        labels: year,
+    var dates = <?php echo $dates; ?>;
+    var asteroids_count = <?php echo $asteroids_count; ?>;
+    var fastest_astroid = <?php echo $fastest_astroid; ?>;
+    var closest_astroid = <?php echo $closest_astroid; ?>;
+
+    // var asteroids_data = [
+    //     {
+    //         astroids_count : 20,
+    //         fastest_astroids : 2266355,
+    //         speed: 33773
+    //     },
+    //     {
+    //         astroids_count : 20,
+    //         fastest_astroids : 2266355,
+    //         speed: 33773
+    //     },
+    //     {
+    //         astroids_count : 20,
+    //         fastest_astroids : 2266355,
+    //         speed: 33773
+    //     }, 
+    // ];
+
+    var Asteroids = {
+        labels: dates,
         datasets: [{
-            label: 'Fastest Asteroid',
-            backgroundColor: "red",
-            data: user
-        },
-        {
-            label: 'Closest Asteroid',
-            backgroundColor: "blue",
-            data: user
-        },
-        {
-            label: 'Average Size',
-            backgroundColor: "green",
-            data: user
-        }
-    ]
+            label: 'Asteroids' ,
+            backgroundColor: "rgba(6, 167, 125, 1)",
+            data: asteroids_count,
+            },
+        ]
     };
 
     window.onload = function() {
         var ctx = document.getElementById("canvas").getContext("2d");
         window.myBar = new Chart(ctx, {
             type: 'bar',
-            data: fastAsteroid,
+            data: Asteroids,
             options: {
                 elements: {
                     rectangle: {
@@ -55,6 +66,7 @@
                     display: true,
                     text: 'Neo Feed'
                 }
+                
             }
         });
     };
