@@ -1,10 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-<!------ Include the above in your HEAD tag ---------->
-  
-        <!--MDB Forms-->
+
         <div class="container mt-12">
+        @if (session('status'))
+            <div class="alert alert-success" role="alert">
+                {{ session('status') }}
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger" role="alert">
+                {{ session('error') }}
+            </div>
+        @endif
 
             <div class="text-center darken-grey-text mb-8">
                 <h1 class="font-bold mt-4 mb-3 h5">Asteroids</h1>

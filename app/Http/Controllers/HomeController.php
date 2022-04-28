@@ -56,7 +56,9 @@ class HomeController extends Controller
         
         curl_close($ch); // Close the cURL connection
         $data= json_decode($result);
-        dd($data);
+        if($data->error){
+            return redirect()->back()->with('error', $data->error->message);
+        }
         $dates = array_keys(get_object_vars($data->near_earth_objects));
         $asteroids_count = [];
         $fastest_astroid_array = [];
@@ -67,40 +69,26 @@ class HomeController extends Controller
                 $fastest_astroid = [];
                 $closest_astroid = [];
                 $max_speed = 0;
-                $closest_astroid_distance = 0;
+                $closest_astroid_distance = $newdata[0]->close_approach_data[0]->miss_distance->kilometers;
                 $average_size = 0;
                 array_push($asteroids_count, count($newdata));
                 foreach($newdata as $each_ast){
                     if($max_speed < $each_ast->close_approach_data[0]->relative_velocity->kilometers_per_hour){
-                       
                         $max_speed = $each_ast->close_approach_data[0]->relative_velocity->kilometers_per_hour;
-                        $fastest_astroid = [
-                            'astroidId' => $each_ast->id,
-                            'speed' => $max_speed,
-                        ];
                     }
-                    echo $each_ast->close_approach_data[0]->miss_distance->kilometers."<br>";
-                    if($closest_astroid_distance < $each_ast->close_approach_data[0]->miss_distance->kilometers){
+                    if($closest_astroid_distance > $each_ast->close_approach_data[0]->miss_distance->kilometers){
                         $closest_astroid_distance = $each_ast->close_approach_data[0]->miss_distance->kilometers;
-                        $closest_astroid = [
-                            'astroidId' => $each_ast->id,
-                            'distance' => $closest_astroid_distance,
-                        ];
                     }
                    $average_size += $each_ast->estimated_diameter->kilometers->estimated_diameter_max;
                       
                 } 
-                exit();
                 $averagefor_date=$average_size/count((array)$data->near_earth_objects);
 
-                array_push($fastest_astroid_array, $fastest_astroid);
-                array_push($closest_astroid_array, $closest_astroid);
+                array_push($fastest_astroid_array, $max_speed);
+                array_push($closest_astroid_array, $closest_astroid_distance);
                 array_push($average_size_data, $averagefor_date);
             }
         }
-
-        dd($fastest_astroid_array);
-        // dd($average_size_data);
         
         return view('asteroid-chart')
         ->with('dates',json_encode($dates,JSON_NUMERIC_CHECK))
