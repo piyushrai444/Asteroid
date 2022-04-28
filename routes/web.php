@@ -21,4 +21,4 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/nasa', [App\Http\Controllers\HomeController::class, 'data'])->name('data');
-Route::post('/get-neo', [App\Http\Controllers\HomeController::class, 'getNeo'])->name('getNeo');
+Route::post('/find-asteroid', [App\Http\Controllers\HomeController::class, 'findAsteroid'])->name('findAsteroid');
